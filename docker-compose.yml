@@ -1,0 +1,30 @@
+version: '2.3'
+
+services:
+
+  faceswap-gan:
+    image: faceswap-gan
+    container_name: faceswap-gan
+    working_dir: /faceswap-GAN
+    build:
+      context: /home/cvip/faceswap-GAN
+      dockerfile: /home/cvip/faceswap-GAN/Dockerfile
+ 
+    volumes:
+      - ./:/faceswap-GAN
+      - /media/storage/mrybak:/parent_dir
+    ports:
+      - 5555:5555
+    shm_size: '48gb'
+    privileged: true
+    runtime: nvidia
+    command: tail -f /dev/null
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['2', '3']
+              capabilities: [gpu]
+
+
